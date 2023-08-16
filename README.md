@@ -2,6 +2,10 @@
 
 Easily create a digital restaurant menu accessible via QR Code. Modify the menu using Google Sheets and have changes automatically reflected in the live web app!
 
+## Demo and Live Web App
+- **Demo Google Sheet**: [Access the demo spreadsheet here]([LINK_TO_DEMO_SPREADSHEET](https://docs.google.com/spreadsheets/d/1fFQ3Way0qLuc6Z1QsqIu8E-8URorVDQwxGII8pnGeW4/edit#gid=967431055))
+- **Live Web App**: [See the web app in action here]([LINK_TO_LIVE_WEB_APP](https://script.google.com/a/macros/baruzotech.com/s/AKfycbzNVIYbJpVLFmyDRbGd7oUnKzgwzIYiJ3enu6UDozjyPOBmMeRzd8yH7vCE_ry-qryXYw/exec))
+
 ![Untitled design (2)](https://github.com/kevin-vaghasiya/restaurant-menu-webapp-gas/assets/58857285/57f2930c-04d0-49a6-b163-d322a8debd39)
 
 ## Setup and Configuration
