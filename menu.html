@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      ::-webkit-scrollbar {
+        width: 2px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background-color: #888; /* Color of the thumb */
+        border-radius: 2px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: #555; /* Color of the thumb on hover */
+      }
+    </style>
+  </head>
+  <body class="container mx-auto">
+    <div>
+      <div class="grid grid-cols-3">
+        <div class="col-span-3 md:col-span-1 flex justify-center md:block">
+          <img src="<?= logo ?>" alt="" class="h-24" />
+        </div>
+        <div
+          class="col-span-3 md:col-span-2 px-4 md:flex md:flex-row-reverse justify-center items-end"
+        >
+          <div class="md:w-1/2 md:ml-4">
+            <label
+              for="category"
+              class="block text-xs font-medium leading-6 text-gray-700"
+              >Category</label
+            >
+            <select
+              id="category"
+              name="category"
+              onchange="setItems()"
+              class="block w-full rounded-md p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:border-indigo-700"
+            >
+              <option selected value="">All</option>
+            </select>
+          </div>
+          <div class="flex-1 mt-4 md:w-1/2">
+            <label
+              for="default-search"
+              class="mb-2 text-sm font-medium text-gray-900 sr-only"
+              >Search</label
+            >
+            <div class="relative">
+              <div
+                class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+              >
+                <svg
+                  class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  />
+                </svg>
+              </div>
+              <input
+                type="search"
+                id="search"
+                onkeyup="setItems()"
+                class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:border-indigo-700"
+                placeholder="Search"
+                required
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="my-2 p-2 bg-gray-50"></div>
+      <div class="divider divide-y-2 px-4 pb-10">
+        <ul
+          role="list"
+          id="menu_items"
+          class="divide-y md:divide-y-0 divide-gray-100 md:grid grid-cols-12 gap-3"
+        >
+          <!-- <li class="flex md:border border-gray-200 md:rounded-md p-2 justify-between gap-x-6 py-3 col-span-4">
+            <div class="flex-1">
+              <p class="text-base font-semibold leading-6 text-gray-900">
+                Bruschetta al Pomodoro
+              </p>
+              <p class="mt-1 truncate text-sm leading-5 text-gray-500">$6.50</p>
+            </div>
+            <div>
+              <img
+                class="h-16 w-16 bg-gray-50 rounded-lg"
+                src="https://plus.unsplash.com/premium_photo-1677686707068-787e793bc582?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                alt=""
+              />
+            </div>
+          </li>
+          <li class="flex md:border border-gray-200 md:rounded-md p-2 justify-between gap-x-6 py-3 col-span-4">
+            <div class="flex-1">
+              <p class="text-base font-semibold leading-6 text-gray-900">
+                Bruschetta al Pomodoro
+              </p>
+              <p class="mt-1 truncate text-sm leading-5 text-gray-500">$6.50</p>
+            </div>
+            <div>
+              <img
+                class="h-16 w-16 bg-gray-50 rounded-lg"
+                src="https://plus.unsplash.com/premium_photo-1677686707068-787e793bc582?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                alt=""
+              />
+            </div>
+          </li> -->
+        </ul>
+      </div>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const data = JSON.parse('<?= data ?>');
+
+      const init = () => {
+        setCategory();
+        setItems();
+      };
+
+      const setCategory = () => {
+        const $category = $('#category');
+
+        const { categories } = data;
+        categories.forEach((name) => {
+          const $option = $(`<option value="${name}">${name}</option>`);
+          $category.append($option);
+        });
+      };
+
+      const setItems = () => {
+        const $category = $('#category');
+        const selected_category = $category.val();
+
+        const $menu_items = $('#menu_items');
+        $menu_items.empty();
+
+        const search_text = $('#search').val().toLowerCase();
+        const { categories, menu_items, settings } = data;
+
+        const category_list = selected_category
+          ? [selected_category]
+          : categories;
+
+        const menu = {};
+
+        category_list.forEach((category) => {
+          menu_items.forEach((item) => {
+            const { name, price, image, category: item_category } = item;
+            if (category !== item_category) {
+              return;
+            }
+
+            if (search_text && name.toLowerCase().indexOf(search_text) === -1) {
+              return;
+            }
+
+            if (!menu[category]) {
+              menu[category] = [item];
+            } else {
+              menu[category].push(item);
+            }
+          });
+        });
+
+        category_list.forEach((category, i) => {
+          const items = menu[category];
+          if (!items) {
+            return;
+          }
+
+          const $category = $(`<li class="pt-6 sticky col-span-12">
+                                 <h3 id="cat_${i}" class="text-lg font-medium leading-6 text-gray-900"></h3>
+                               </li>`);
+          $menu_items.append($category);
+          $(`#cat_${i}`).text(category);
+
+          items.forEach((item, j) => {
+            const { id, name, price, image, category, description } = item;
+            const $item = $(`
+              <li class="md:col-span-6 lg:col-span-4 h-full">
+                <div class="h-full flex items-stretch md:border border-gray-200 md:rounded-md p-2 justify-between gap-x-6 py-3">
+                    <div class="flex-1">
+                      <p id="item_name${id}" class="text-base font-semibold leading-6 text-gray-800"></p>
+                      <p id="item_price${id}" class="mt-1 truncate text-sm leading-5 text-gray-500"></p>
+                      <p id="item_description${id}" class="mt-1 overflow-hidden whitespace-normal text-xs leading-5 text-gray-500"></p>
+                    </div>
+                    <div>
+                      ${
+                        image &&
+                        `<img
+                            class="h-16 md:h-20 w-16 md:w-20 bg-gray-50 rounded-lg"
+                            src="${image}"
+                            alt=""
+                          />`
+                      }
+                    </div>
+                </div>
+              </li>
+            `);
+            $menu_items.append($item);
+            $(`#item_name${id}`).text(name);
+            $(`#item_price${id}`).text(`${settings.currency}${price}`);
+
+            if (String(description).length > 80) {
+              $(`#item_description${id}`).text(
+                String(description).substring(0, 80) + '...'
+              );
+
+              const $more = $(
+                `<button class="text-xs text-gray-700 hover:text-gray-900" onclick="expandItem('${id}')">More</button>`
+              );
+              $(`#item_description${id}`).append($more);
+            } else {
+              $(`#item_description${id}`).text(String(description));
+            }
+          });
+        });
+      };
+
+      const expandItem = (id) => {
+        const { categories, menu_items } = data;
+        const item = menu_items.find((item) => item.id === id);
+        const { description } = item;
+        $(`#item_description${id}`).text(description);
+      };
+
+      init();
+    </script>
+  </body>
+</html>
