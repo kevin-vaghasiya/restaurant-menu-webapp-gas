@@ -39,11 +39,18 @@ const getSettings = (ss: GoogleAppsScript.Spreadsheet.Spreadsheet) => {
   if (!settings_sheet) return null;
   const data = settings_sheet.getDataRange().getValues();
 
-  return {
+  const settings = {
     name: data[0][1],
     logo: data[1][1],
     currency: data[2][1],
   };
+
+  if (String(settings.logo).includes('drive.google.com')) {
+    const fileId = String(settings.logo).split('/d/')[1].split('/')[0];
+    settings.logo = `https://drive.google.com/uc?export=download&id=${fileId}`;
+  }
+
+  return settings;
 };
 
 const getMenuItems = (ss: GoogleAppsScript.Spreadsheet.Spreadsheet) => {
