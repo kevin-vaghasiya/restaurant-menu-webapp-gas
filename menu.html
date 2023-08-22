@@ -207,8 +207,7 @@
                         image &&
                         `<img
                             class="h-16 md:h-20 w-16 md:w-20 bg-gray-50 rounded-lg"
-                            src="${image}"
-                            alt=""
+                            id="item_image${id}"
                           />`
                       }
                     </div>
@@ -218,6 +217,9 @@
             $menu_items.append($item);
             $(`#item_name${id}`).text(name);
             $(`#item_price${id}`).text(`${settings.currency}${price}`);
+
+            $(`#item_image${id}`).attr('src', image);
+            $(`#item_image${id}`).attr('alt', name);
 
             if (String(description).length > 80) {
               $(`#item_description${id}`).text(
