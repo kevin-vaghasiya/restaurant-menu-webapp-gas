@@ -24,7 +24,7 @@
     <div>
       <div class="grid grid-cols-3">
         <div class="col-span-3 md:col-span-1 flex justify-center md:block">
-          <img src="<?= logo ?>" alt="" class="h-24" />
+          <img id="logo_img" src="" alt="" class="h-24" />
         </div>
         <div
           class="col-span-3 md:col-span-2 px-4 md:flex md:flex-row-reverse justify-center items-end"
@@ -131,6 +131,7 @@
       const data = JSON.parse('<?= data ?>');
 
       const init = () => {
+        $("#logo_img").attr('src', "<?= logo ?>");
         setCategory();
         setItems();
       };

@@ -47,7 +47,9 @@ const getSettings = (ss: GoogleAppsScript.Spreadsheet.Spreadsheet) => {
 
   if (String(settings.logo).includes('drive.google.com')) {
     const fileId = String(settings.logo).split('/d/')[1].split('/')[0];
-    settings.logo = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    const blob = DriveApp.getFileById(fileId).getBlob();
+    const base64 = Utilities.base64Encode(blob.getBytes());
+    settings.logo = `data:image/png;base64,${base64}`;
   }
 
   return settings;
@@ -76,7 +78,9 @@ const getMenuItems = (ss: GoogleAppsScript.Spreadsheet.Spreadsheet) => {
 
     if (String(image).includes('drive.google.com')) {
       const fileId = String(image).split('/d/')[1].split('/')[0];
-      item.image = `https://drive.google.com/uc?export=download&id=${fileId}`;
+      const blob = DriveApp.getFileById(fileId).getBlob();
+      const base64 = Utilities.base64Encode(blob.getBytes());
+      item.image = `data:image/png;base64,${base64}`;
     }
 
     menu_items.push(item);
